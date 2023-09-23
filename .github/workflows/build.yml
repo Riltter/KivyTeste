@@ -28,12 +28,14 @@ jobs:
           path: .buildozer
           key: ${{ runner.os }}-${{ steps.get-date.outputs.date }}-${{ hashFiles('buildozer.spec') }}
 
+      # Reduzir o nível de log do passo `buildozer`
       - name: Build with Buildozer
         uses: ArtemSBulgakov/buildozer-action@v1
         id: buildozer
         with:
           command: buildozer android debug
           buildozer_version: stable
+          log_level: INFO
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
