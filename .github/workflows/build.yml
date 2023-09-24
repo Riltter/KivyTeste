@@ -17,6 +17,11 @@ jobs:
           echo "::set-output name=date::$(/bin/date -u "+%Y%m%d")"
         shell: bash
 
+      # Create the GITHUB_OUTPUT_DATE environment file
+      - name: Create environment file
+        run: |
+          echo "${{ steps.get-date.outputs.date }}" >> $GITHUB_ENV/GITHUB_OUTPUT_DATE
+
       - name: Cache Buildozer global directory
         uses: actions/cache@v3
         with:
@@ -27,7 +32,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: .buildozer
-          key: ${{ runner.os }}-${{ steps.get-date.outputs.date }}-${{ hashFiles('buildozer.spec') }}
+          key: ${{ runner.os }}-${{ env.GITHUB_OUTPUT_DATE }}-${{ hashFiles('buildozer.spec') }}
 
       - name: Remove git header
         run: |
